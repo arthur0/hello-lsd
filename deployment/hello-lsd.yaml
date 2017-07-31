@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-lsd
+  labels:
+    app: hello-lsd
+spec:
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: hello-lsd
+    spec:
+      containers:
+      - name: hello-lsd
+        image: artmr/hello-lsd:v2
+        ports:
+        - containerPort: 8080 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-lsd
+  labels:
+    app: hello-lsd
+spec:
+  ports:
+  - nodePort: 30000
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: hello-lsd
+  type: NodePort
+
